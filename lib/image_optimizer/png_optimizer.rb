@@ -1,6 +1,7 @@
 class ImageOptimizer
   class PNGOptimizer
     attr_reader :path
+    attr_reader :quality
 
     def initialize(path, quality=-1)
       @path = path
