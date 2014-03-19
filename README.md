@@ -47,11 +47,25 @@ $ gem install image_optimizer
 #### Optimize PNG or GIF formats:
 
 OptiPNG is a PNG optimizer that recompresses image files to a smaller size without losing any information and
-performs PNG integrity checks and corrections.
+performs PNG integrity checks and corrections. By default, the optimizer will use the highest optimization settings for maximum (lossless) compression.
 
 ```ruby
 ImageOptimizer.new('path/to/file.png').optimize
 ```
+
+##### Optional PNG Quality
+
+OptiPNG supports several levels of optimization; higher settings lead to better compression but take significantly longer to complete. To control this, pass a 'quality' parameter with a value of 0 to 7. Values outside this range will be ignored by the PNG compressor.
+
+```ruby
+ImageOptimizer.new('path/to/file.png', 5).optimize
+```
+
+is equivalent to the following command-line
+```bash
+$ optipng -o5 path/to/file.png
+```
+
 
 #### Optimize JPEG formats:
 
@@ -63,7 +77,7 @@ ImageOptimizer.new('path/to/file.jpg').optimize
 
 ##### Lossy JPEG optimization
 
-Pass an optional 'quality' parameter to target a specific JPG quality level (0-100), or pass -1 for lossless optimization. PNGs will ignore the quality setting
+Pass an optional 'quality' parameter to target a specific JPG quality level (0-100), or pass -1 for lossless optimization.
 
 ```ruby
 ImageOptimizer.new('path/to/file.jpg', 80).optimize

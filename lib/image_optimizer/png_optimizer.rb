@@ -2,8 +2,9 @@ class ImageOptimizer
   class PNGOptimizer
     attr_reader :path
 
-    def initialize(path)
+    def initialize(path, quality=-1)
       @path = path
+      @quality = quality
     end
 
     def optimize
@@ -27,7 +28,18 @@ class ImageOptimizer
     end
 
     def optimize_png
-      system "#{png_optimizer_bin} -o7 #{path}"
+      if quality < -1 || quality > 7
+        # if outside range, call with 'default' quality
+        system "#{png_optimizer_bin} #{path}"
+
+      elsif quality == -1
+        # if -1, optimize full quality (for backwards-compatibility)
+        system "#{png_optimizer_bin} -o7 #{path}"
+
+      else
+        # if we're between 0 and 7, pass it on to optipng
+        system "#{png_optimizer_bin} -o#{quality} #{path}"
+      end
     end
 
     def png_optimizer_present?
